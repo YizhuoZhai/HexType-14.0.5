@@ -236,6 +236,8 @@ class CodeGenFunction : public CodeGenTypeCache {
   void operator=(const CodeGenFunction &) = delete;
 
   friend class CGCXXABI;
+  unsigned v_changing_times = 0;
+  unsigned v_verification_times = 0;
 public:
   /// A jump destination is an abstract label, branching to which may
   /// require a jump out through normal cleanups.
@@ -260,8 +262,6 @@ public:
     EHScopeStack::stable_iterator ScopeDepth;
     unsigned Index;
 
-    unsigned v_changing_times = 0;
-    unsigned v_verification_times = 0;
   };
 
   CodeGenModule &CGM;  // Per-module state.
