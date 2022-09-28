@@ -21,6 +21,7 @@
 #include "CodeGenPGO.h"
 #include "EHScopeStack.h"
 #include "VarBypassDetector.h"
+#include "CGBlocks.h"
 #include "clang/AST/CharUnits.h"
 #include "clang/AST/CurrentSourceLocExprScope.h"
 #include "clang/AST/ExprCXX.h"
@@ -236,8 +237,6 @@ class CodeGenFunction : public CodeGenTypeCache {
   void operator=(const CodeGenFunction &) = delete;
 
   friend class CGCXXABI;
-  unsigned v_changing_times = 0;
-  unsigned v_verification_times = 0;
 public:
   /// A jump destination is an abstract label, branching to which may
   /// require a jump out through normal cleanups.
@@ -1978,9 +1977,7 @@ private:
 
 public:
   CodeGenFunction(CodeGenModule &cgm, bool suppressNewContext=false);
-  ~CodeGenFunction(){
-  	llvm::errs()<<"v_changing_times = "<<v_changing_times<<", v_verification_times = "<<v_verification_times<<"\n";
-  }
+  ~CodeGenFunction();
 
   CodeGenTypes &getTypes() const { return CGM.getTypes(); }
   ASTContext &getContext() const { return CGM.getContext(); }
